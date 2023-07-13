@@ -137,19 +137,15 @@ const consoleInit = (): void => {
  *
  * @param graphqlPath {undefined|string} GraphQL服务路径
  */
-const consoleStart = (graphqlPath: undefined | string = undefined): void => {
+const consoleStart = (): void => {
   const serverPort = process.env.PORT ?? 3000
 
   console.log(
-    '\x1b[32m%s\x1b[0m', `\n👂 Koa.js w/ ${process.env.ER_ENGINE as string} now listening on ${serverPort} at:\n`
+    '\x1b[32m%s\x1b[0m', `\n👂 Koa.js now listening on ${serverPort} at:\n`
   )
   console.log(
     '\x1b[32m%s\x1b[33m',
     'Root    ', `http://localhost:${serverPort}`
-  )
-  typeof graphqlPath === 'string' && console.log(
-    '\x1b[32m%s\x1b[33m%s\x1b[0m',
-    'GraphQL  ', `http://localhost:${serverPort}${graphqlPath}\n`
   )
 
   // 输出本地IP
@@ -158,10 +154,6 @@ const consoleStart = (graphqlPath: undefined | string = undefined): void => {
     console.log(
       '\x1b[32m%s\x1b[33m',
       'Root    ', `http://${item.address as string}:${serverPort as string} (${item.internal === true ? 'local' : 'external'})`
-    )
-    typeof graphqlPath === 'string' && console.log(
-      '\x1b[32m%s\x1b[33m%s\x1b[0m',
-      'GraphQL  ', `http://${item.address as string}:${serverPort as string}${graphqlPath} (${item.internal === true ? 'local' : 'external'})\n`
     )
   })
 
@@ -193,7 +185,7 @@ const briefLog: Koa.Middleware = async (ctx, next) => {
  * @param {*} ctx
  * @param {*} next
  */
-export const methodHandler = async (ctx, next) => {
+export const methodHandler: Koa.Middleware = async (ctx, next) => {
   if (ctx.method === 'OPTIONS') {
     // Quickly response to OPTIONS method
     ctx.status = 204

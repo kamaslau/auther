@@ -3,6 +3,13 @@
  *
  * 处理授权、用户资料获取等业务
  */
+
+/**
+ * 获取鉴权URL
+ * @returns {string}
+ */
+export const getAuthUrl = () => `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_APP_ID}&redirect_uri=http://localhost:${process.env.PORT}&scope=user:email`
+
 const composeCredentials = (code, appId, appSecret) => ({
   client_id: appId ?? process.env.APP_ID,
   client_secret: appSecret ?? process.env.APP_SECRET,
