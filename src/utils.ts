@@ -22,6 +22,18 @@ const periods: timePeriods = {
 }
 
 /**
+ * 错误处理
+ *
+ * @param {*} error
+ * @param {*} ctx
+ */
+const errorCatcher = (error, ctx) => {
+  console.error('server error: ', error)
+
+  ctx.status = error.status ?? 501
+}
+
+/**
  * 获取当前时间戳
  *
  * 以当前本地语言显示
@@ -175,8 +187,27 @@ const briefLog: Koa.Middleware = async (ctx, next) => {
   console.log(`${ctx.ip} ${ctx.method} ${ctx.type} > ${ctx.url} - ${durationText}`)
 }
 
+/**
+ * Handle request method
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
+export const methodHandler = async (ctx, next) => {
+  if (ctx.method === 'OPTIONS') {
+    // Quickly response to OPTIONS method
+    ctx.status = 204
+  } else if (ctx.method === 'POST') {
+    // Allow only POST method
+    await next()
+  } else {
+    ctx.status = 405
+  }
+}
+
 export {
   periods,
+  errorCatcher,
   getTimeString,
   getLocalIP,
   getClientIP,

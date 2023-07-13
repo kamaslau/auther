@@ -9,7 +9,7 @@ log() {
 }
 
 ORG_NAME=${ORG_NAME:="liuyajie728"}
-APP_NAME=${APP_NAME:="auther-github"}
+APP_NAME=${APP_NAME:="auther"}
 
 CN=${CN:="y"}
 # Use Mirrors for usage in PRC
