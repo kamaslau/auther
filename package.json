@@ -1,0 +1,29 @@
+{
+  "name": "auther",
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": {
+    "name": "Kamas Lau",
+    "email": "kamaslau@dingtalk.com"
+  },
+  "engines": {
+    "node": "^18 || >=18"
+  },
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "cross-env NODE_ENV=development node .",
+    "start": "NODE_ENV=production node ."
+  },
+  "dependencies": {
+    "@koa/cors": "^4.0.0",
+    "dotenv": "^16.3.1",
+    "koa": "^2.14.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
