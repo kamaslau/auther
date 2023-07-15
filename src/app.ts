@@ -29,7 +29,7 @@ app.use(briefLog)
 if (process.env.NODE_ENV === 'development') {
   const staticRoot = 'public'
   const staticOpts = {
-    // maxage: 1000 * 60 
+    maxage: 1000 * 60
   }
   app.use(serve(staticRoot, staticOpts))
 }
@@ -40,7 +40,7 @@ app.use(methodHandler)
 
 app.use(bodyParser())
 process.env.NODE_ENV === 'development' && app.use(async (ctx, next) => {
-  console.log('request body: ', ctx.request.body)
+  // console.log('request body: ', ctx.request.body)
 
   await next()
 })
@@ -55,11 +55,25 @@ interface authBody {
 const mainHandler: Koa.Middleware = async (ctx) => {
   // 判断并调用相应登陆方式
   const { vendor, input } = ctx.request.body as authBody
-  console.log(vendor, input)
+  // console.log(vendor, input)
+
+  let user
+
+  switch (vendor.toLowerCase()) {
+    case 'github':
+      user = await authGithub(input)
+      break
+
+    default:
+      user = null
+  }
 
   ctx.body = {
-    vendor,
-    input
+    data: { user },
+    request: {
+      header: ctx.headers,
+      body: ctx.request.body
+    }
   }
 }
 app.use(mainHandler)

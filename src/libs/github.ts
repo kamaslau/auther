@@ -69,37 +69,23 @@ const requestUserAccount = async (token) => {
  * 2. 应用服务端使用code向GitHub服务端请求access_token
  * 3. 应用服务端使用access_token向GitHub服务端请求用户数据
  */
-export const main = async (ctx) => {
-  // validate params
-  const params = ctx.query
-  // console.log("params: ", params);
-
-  if (process.env.NODE_ENV === 'development') {
-    if (!params.code) {
-      ctx.throw(422, 'input \'code\' not received')
-    }
-  } else {
-    const requiredParams = ['code', 'appId', 'appSecret']
-    const missedParams = requiredParams.filter((item) => !params[item])
-
-    if (missedParams.length > 0) {
-      const missedParamsString = missedParams.reduce(
-        (prev, now) => `${prev}'${now}', `,
-        ''
-      )
-      ctx.throw(422, `input ${missedParamsString.trimEnd()} not received`)
-    }
-  }
+export const main = async (params) => {
+  console.log('params: ', params)
 
   const { code, appId, appSecret } = params
-  const credentials = composeCredentials(code, appId, appSecret)
 
-  const { access_token } = await requestAccessToken(credentials)
+  try {
+    const credentials = composeCredentials(code, appId, appSecret)
 
-  const user = await requestUserAccount(access_token)
+    const { access_token } = await requestAccessToken(credentials)
 
-  ctx.body = {
-    data: user,
+    const user = await requestUserAccount(access_token)
+    return user
+
+  } catch (error) {
+    console.error(error)
+
+    return null
   }
 }
 

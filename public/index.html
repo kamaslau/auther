@@ -5,6 +5,30 @@
     <title>auther</title>
 
     <script>
+      let code = null;
+
+      const composeInput = (code = "") => {
+        const result = {
+          code,
+          appId: "",
+          appSecret: "",
+        };
+
+        return JSON.stringify(result);
+      };
+
+      window.onload = () => {
+        const queryParams = new URLSearchParams(window.location.search);
+        code = queryParams.get("code");
+        console.log("code: ", code);
+
+        if (!!code) {
+          document.getElementById("code").innerText = code;
+          const formInput = composeInput(code);
+          document.getElementsByName("input")[0].innerText = formInput;
+        }
+      };
+
       const handleSubmit = async (event) => {
         // console.log("handleSubmit: ", event);
         event.preventDefault();
@@ -35,6 +59,8 @@
     <main>
       <p>Available <em>ONLY</em> when <code>NODE_ENV=development</code>.</p>
 
+      <p>code <code id="code"></code></p>
+
       <form onsubmit="handleSubmit(event)" method="post" autocomplete="on">
         <fieldset>
           <label for="vendor">Vendor</label>
@@ -44,10 +70,10 @@
           <label for="input">Input</label>
           <textarea
             name="input"
-            row="5"
-            placeholder='Parameters in JSON format, for example {"GithubAppId":"", "GithubAppSecret":""}'
+            rows="10"
+            placeholder='Parameters in JSON format, for example {"appId":"", "appSecret":"", "code":""}'
           >
-{"GithubAppId":"", "GithubAppSecret":""}</textarea
+{"appId":"", "appSecret":"", "code":""}</textarea
           >
         </fieldset>
 
