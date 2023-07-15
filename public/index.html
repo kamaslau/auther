@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>auther</title>
+
+    <script>
+      const handleSubmit = async (event) => {
+        // console.log("handleSubmit: ", event);
+        event.preventDefault();
+
+        const payload = Object.fromEntries(new FormData(event.target));
+
+        const result = await fetch("/", {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .catch((error) => console.error(error));
+
+        console.log("result: ", result);
+        !!result && (document.querySelector("output").innerHTML = result);
+      };
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <h1>auther</h1>
+    </header>
+
+    <main>
+      <p>Available <em>ONLY</em> when <code>NODE_ENV=development</code>.</p>
+
+      <form onsubmit="handleSubmit(event)" method="post" autocomplete="on">
+        <fieldset>
+          <label for="vendor">Vendor</label>
+          <input name="vendor" placeholder="Github, GitLab, etc." required />
+
+          <br />
+          <label for="input">Input</label>
+          <textarea
+            name="input"
+            row="5"
+            placeholder='Parameters in JSON format, for example {"GithubAppId":"", "GithubAppSecret":""}'
+          >
+{"GithubAppId":"", "GithubAppSecret":""}</textarea
+          >
+        </fieldset>
+
+        <button>Submit</button>
+        <button type="reset">Reset</button>
+      </form>
+
+      <output> </output>
+    </main>
+  </body>
+</html>

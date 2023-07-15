@@ -1,7 +1,8 @@
 // External
 import * as dotenv from 'dotenv'
 import Koa from 'koa'
-import bodyParser from 'koa-bodyparser' // 处理json和x-www-form-urlencoded
+import bodyParser from '@koa/bodyparser' // 处理json和x-www-form-urlencoded
+import serve from 'koa-static'
 import cors from '@koa/cors'
 
 // Local
@@ -24,6 +25,15 @@ app.on('error', errorCatcher)
 
 app.use(briefLog)
 
+
+if (process.env.NODE_ENV === 'development') {
+  const staticRoot = 'public'
+  const staticOpts = {
+    // maxage: 1000 * 60 
+  }
+  app.use(serve(staticRoot, staticOpts))
+}
+
 app.use(cors({ origin: '*', allowMethods: 'POST' }))
 
 app.use(methodHandler)
@@ -36,17 +46,21 @@ process.env.NODE_ENV === 'development' && app.use(async (ctx, next) => {
 })
 
 // app.use(authGithub)
+
 type authInput = object | string | any
 interface authBody {
   vendor: string
   input: authInput
 }
-const mainHandler: Koa.Middleware = async (ctx, next) => {
+const mainHandler: Koa.Middleware = async (ctx) => {
   // 判断并调用相应登陆方式
   const { vendor, input } = ctx.request.body as authBody
   console.log(vendor, input)
 
-  await next()
+  ctx.body = {
+    vendor,
+    input
+  }
 }
 app.use(mainHandler)
 
