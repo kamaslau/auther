@@ -7,17 +7,24 @@ import cors from '@koa/cors'
 
 // Local
 import { errorCatcher, consoleInit, consoleStart, briefLog, methodHandler } from './utils.js'
-import authGithub, { getAuthUrl } from './libs/github.js'
+import authGithub, { getAuthUrl as getGithubAuthUrl } from './libs/github.js'
+import authGitee, { getAuthUrl as getGiteeAuthUrl } from './libs/gitee.js'
 
 dotenv.config()
 
 consoleInit()
 
-process.env.NODE_ENV === 'development' &&
+if (process.env.NODE_ENV === 'development') {
   console.log(
     'Request GitHub auth code with url: ',
-    getAuthUrl()
+    getGithubAuthUrl()
   )
+
+  console.log(
+    'Request Gitee auth code with url: ',
+    getGiteeAuthUrl()
+  )
+}
 
 const app = new Koa()
 

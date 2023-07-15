@@ -7,31 +7,37 @@
  * 处理授权、用户资料获取等业务
  */
 
+/**
+ * 获取鉴权URL
+ * @returns {string}
+ */
+export const getAuthUrl = () => `https://gitee.com/oauth/authorize?client_id=${process.env.GITEE_APP_ID}&redirect_uri=http://localhost:${process.env.PORT}&response_type=code`
+
 type clientCode = string
 
-/**
- * 获取access_token
- *
- * 凭证为客户端请求GiteeAPI获取的code，以及在Gitee注册的client_id、client_secret
- */
 interface Credentials {
   client_id: string
   client_secret: string
   code: clientCode
 }
 
-const composeCredentials = (code: clientCode): Credentials => ({
-  client_id: process.env.GE_ID as string,
-  client_secret: process.env.GE_SECRET as string,
+const composeCredentials = (code: clientCode, appId: string, appSecret: string): Credentials => ({
+  client_id: appId ?? process.env.APP_ID,
+  client_secret: appSecret ?? process.env.APP_SECRET,
   code,
 })
 
-const catchError = (error: Error): void => {
+const catchError = (error: Error) => {
   throw new Error(JSON.stringify(error))
 }
 
-const requestToken = async (credentials: Credentials): Promise<any> => {
-  // console.log('requestToken: ', credentials)
+/**
+ * 获取access_token
+ *
+ * 凭证为客户端请求GiteeAPI获取的code，以及在Gitee注册的client_id、client_secret
+ */
+const requestAccessToken = async (credentials: Credentials) => {
+  // console.log('requestAccessToken: ', credentials)
 
   const params = new URLSearchParams({
     ...credentials,
@@ -57,7 +63,7 @@ const requestToken = async (credentials: Credentials): Promise<any> => {
 /**
  * 获取用户数据；凭证为access_token
  */
-const requestUserAccount = async (token: string): Promise<any> => {
+const requestUserAccount = async (token: string) => {
   console.log('requestUserAccount: ', token)
 
   const result: any = await fetch(
@@ -85,14 +91,25 @@ const requestUserAccount = async (token: string): Promise<any> => {
  * 2. 应用服务端使用code向Gitee服务端请求access_token
  * 3. 应用服务端使用access_token向Gitee服务端请求用户数据
  */
-export const main = async (code: clientCode): Promise<any> => {
-  const credentials = composeCredentials(code)
+export const main = async (params): Promise<any | null> => {
+  console.log('params: ', params)
 
-  const { access_token } = await requestToken(credentials)
+  const { code, appId, appSecret } = params
 
-  const user = await requestUserAccount(access_token)
+  try {
+    const credentials = composeCredentials(code, appId, appSecret)
 
-  return { ...user }
+    const { access_token } = await requestAccessToken(credentials)
+
+    const user = await requestUserAccount(access_token)
+
+    return user
+
+  } catch (error) {
+    console.error(error)
+
+    return null
+  }
 }
 
 export default main

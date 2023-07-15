@@ -10,17 +10,25 @@
  */
 export const getAuthUrl = () => `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_APP_ID}&redirect_uri=http://localhost:${process.env.PORT}&scope=user:email`
 
-const composeCredentials = (code, appId, appSecret) => ({
+type clientCode = string
+
+interface Credentials {
+  client_id: string
+  client_secret: string
+  code: clientCode
+}
+
+const composeCredentials = (code: clientCode, appId: string, appSecret: string): Credentials => ({
   client_id: appId ?? process.env.APP_ID,
   client_secret: appSecret ?? process.env.APP_SECRET,
   code,
 })
 
-const catchError = (error) => {
+const catchError = (error: Error) => {
   throw new Error(JSON.stringify(error))
 }
 
-const requestAccessToken = async (credentials) => {
+const requestAccessToken = async (credentials: Credentials) => {
   // console.log('requestAccessToken: ', credentials)
 
   const result = await fetch('https://github.com/login/oauth/access_token', {
@@ -41,7 +49,7 @@ const requestAccessToken = async (credentials) => {
 /**
  * 获取用户数据；凭证为access_token
  */
-const requestUserAccount = async (token) => {
+const requestUserAccount = async (token: string) => {
   // console.log('requestUserAccount: ', token)
 
   const result = await fetch(
@@ -69,7 +77,7 @@ const requestUserAccount = async (token) => {
  * 2. 应用服务端使用code向GitHub服务端请求access_token
  * 3. 应用服务端使用access_token向GitHub服务端请求用户数据
  */
-export const main = async (params) => {
+export const main = async (params): Promise<any | null> => {
   console.log('params: ', params)
 
   const { code, appId, appSecret } = params
