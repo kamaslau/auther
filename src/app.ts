@@ -30,13 +30,22 @@ app.use(methodHandler)
 
 app.use(bodyParser())
 process.env.NODE_ENV === 'development' && app.use(async (ctx, next) => {
+  console.log('request body: ', ctx.request.body)
+
   await next()
-  ctx.body = ctx.request.body
 })
 
 // app.use(authGithub)
-
+type authInput = object | string | any
+interface authBody {
+  vendor: string
+  input: authInput
+}
 const mainHandler: Koa.Middleware = async (ctx, next) => {
+  // 判断并调用相应登陆方式
+  const { vendor, input } = ctx.request.body as authBody
+  console.log(vendor, input)
+
   await next()
 }
 app.use(mainHandler)
