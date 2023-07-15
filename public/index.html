@@ -46,7 +46,8 @@
           .catch((error) => console.error(error));
 
         console.log("result: ", result);
-        !!result && (document.querySelector("output").innerHTML = result);
+        !!result &&
+          (document.querySelector("output").innerHTML = JSON.stringify(result));
       };
     </script>
   </head>

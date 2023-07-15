@@ -19,8 +19,8 @@ interface Credentials {
 }
 
 const composeCredentials = (code: clientCode, appId: string, appSecret: string): Credentials => ({
-  client_id: appId ?? process.env.APP_ID,
-  client_secret: appSecret ?? process.env.APP_SECRET,
+  client_id: appId ?? process.env.GITHUB_APP_ID,
+  client_secret: appSecret ?? process.env.GITEE_APP_SECRET,
   code,
 })
 

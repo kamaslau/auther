@@ -64,11 +64,17 @@ const mainHandler: Koa.Middleware = async (ctx) => {
   const { vendor, input } = ctx.request.body as authBody
   // console.log(vendor, input)
 
+  const params = JSON.parse(input)
+
   let user
 
   switch (vendor.toLowerCase()) {
     case 'github':
-      user = await authGithub(input)
+      user = await authGithub(params)
+      break
+
+    case 'gitee':
+      user = await authGitee(params)
       break
 
     default:

@@ -22,8 +22,8 @@ interface Credentials {
 }
 
 const composeCredentials = (code: clientCode, appId: string, appSecret: string): Credentials => ({
-  client_id: appId ?? process.env.APP_ID,
-  client_secret: appSecret ?? process.env.APP_SECRET,
+  client_id: appId ?? process.env.GITEE_APP_ID,
+  client_secret: appSecret ?? process.env.GITEE_APP_SECRET,
   code,
 })
 
@@ -42,7 +42,7 @@ const requestAccessToken = async (credentials: Credentials) => {
   const params = new URLSearchParams({
     ...credentials,
     grant_type: 'authorization_code',
-    redirect_uri: process.env.GE_REDIRECT_URI as string
+    redirect_uri: `http://localhost:${process.env.PORT}`
   }).toString()
   // console.log('params: ', params)
 
