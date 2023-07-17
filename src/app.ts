@@ -47,13 +47,16 @@ app.use(cors({ origin: '*', allowMethods: 'POST' }))
 app.use(methodHandler)
 
 app.use(bodyParser())
-process.env.NODE_ENV === 'development' && app.use(async (ctx, next) => {
-  // console.log('request body: ', ctx.request.body)
-
+app.use(async (ctx, next) => {
   ctx.body = {
+    // https://koajs.com/#request
     request: {
       header: ctx.headers,
-      body: ctx.request.body
+      body: ctx.request.body,
+      method: ctx.method,
+      path: ctx.path,
+      ip: ctx.ip,
+      ips: ctx.ips,
     }
   }
 
@@ -89,17 +92,15 @@ const mainHandler: Koa.Middleware = async (ctx) => {
   // 判断并调用相应登陆方式
   const { vendor, input } = ctx.request.body as authBody
 
-  const params = input
-
   let user = null
 
-  switch (vendor.toLowerCase()) {
+  switch (vendor?.toLowerCase()) {
     case 'github':
-      user = await authGithub(ctx, params)
+      user = await authGithub(ctx, input)
       break
 
     case 'gitee':
-      user = await authGitee(ctx, params)
+      user = await authGitee(ctx, input)
       break
 
     default:
