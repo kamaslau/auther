@@ -13,16 +13,35 @@ COPY package.json pnpm-lock.yaml ./
 
 
 # ======
+# 依赖项:开发环境（可构建）
+FROM deps as deps-dev
+RUN pnpm i
+
+
+# ======
 # 依赖项:生产环境
 FROM deps AS deps-prod
 RUN pnpm i --production
 
 
 # ======
+# 构建器
+FROM deps AS builder
+COPY --from=deps-dev ${APP_PATH}/node_modules ./node_modules
+COPY src ./src
+COPY types ./types
+# COPY .env ./
+COPY .env.sample ./.env
+COPY tsconfig.json ./
+RUN pnpm build
+
+
+# ======
 # 运行时
 FROM deps AS final
 COPY --from=deps-prod ${APP_PATH}/node_modules ./node_modules
-COPY src ./src
-COPY .env ./
+COPY public ./public
+COPY --from=builder ${APP_PATH}/dist ./dist
+COPY --from=builder ${APP_PATH}/.env ./
 EXPOSE 3000
 CMD pnpm start
