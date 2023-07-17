@@ -64,7 +64,7 @@ const requestAccessToken = async (credentials: Credentials) => {
  * 获取用户数据；凭证为access_token
  */
 const requestUserAccount = async (token: string) => {
-  console.log('requestUserAccount: ', token)
+  // console.log('requestUserAccount: ', token)
 
   const result: any = await fetch(
     `https://gitee.com/api/v5/user?access_token=${token}`,
@@ -92,7 +92,7 @@ const requestUserAccount = async (token: string) => {
  * 3. 应用服务端使用access_token向Gitee服务端请求用户数据
  */
 export const main = async (ctx, params): Promise<any | null> => {
-  console.log('params: ', params)
+  // console.log('params: ', params)
 
   const { code, appId, appSecret } = params
 

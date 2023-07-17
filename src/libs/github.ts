@@ -83,7 +83,7 @@ const requestUserAccount = async (token: string) => {
  * 3. 应用服务端使用access_token向GitHub服务端请求用户数据
  */
 export const main = async (ctx, params): Promise<any | null> => {
-  console.log('params: ', params)
+  // console.log('params: ', params)
 
   const { code, appId, appSecret } = params
 

@@ -4,6 +4,7 @@ import Koa from 'koa'
 import bodyParser from '@koa/bodyparser' // 处理json和x-www-form-urlencoded
 import serve from 'koa-static'
 import cors from '@koa/cors'
+import Joi from 'joi'
 
 // Local
 import { errorCatcher, consoleInit, consoleStart, briefLog, methodHandler } from './utils.js'
@@ -59,17 +60,34 @@ process.env.NODE_ENV === 'development' && app.use(async (ctx, next) => {
   await next()
 })
 
-// app.use(authGithub)
-
 type authInput = object | string | any
 interface authBody {
   vendor: string
   input: authInput
 }
+
+const inputValidator: Koa.Middleware = async (ctx, next) => {
+  const schema = Joi.object({
+    vendor: Joi.string().required(),
+    input: Joi.object().required()
+  })
+
+  const result = schema.validate(ctx.request.body)
+  // console.log('result: ', result)
+
+  if (result.error) {
+    ctx.status = 422
+    ctx.body.error = result.error.details.map(item => item.message)
+  } else {
+    await next()
+  }
+}
+// 验证输入值
+app.use(inputValidator)
+
 const mainHandler: Koa.Middleware = async (ctx) => {
   // 判断并调用相应登陆方式
   const { vendor, input } = ctx.request.body as authBody
-  // console.log(vendor, input)
 
   const params = input
 
