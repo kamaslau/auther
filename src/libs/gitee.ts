@@ -18,12 +18,14 @@ type clientCode = string
 interface Credentials {
   client_id: string
   client_secret: string
+  redirect_uri: string
   code: clientCode
 }
 
-const composeCredentials = (code: clientCode, appId: string, appSecret: string): Credentials => ({
+const composeCredentials = (code: clientCode, appId: string, appSecret: string, redirectUri: string): Credentials => ({
   client_id: appId ?? process.env.GITEE_APP_ID,
   client_secret: appSecret ?? process.env.GITEE_APP_SECRET,
+  redirect_uri: redirectUri ?? process.env.GITEE_REDIRECT_URI,
   code,
 })
 
@@ -42,7 +44,6 @@ const requestAccessToken = async (credentials: Credentials) => {
   const params = new URLSearchParams({
     ...credentials,
     grant_type: 'authorization_code',
-    redirect_uri: `http://localhost:${process.env.PORT}`
   }).toString()
   // console.log('params: ', params)
 
