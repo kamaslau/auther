@@ -77,7 +77,7 @@ const mainHandler: Koa.Middleware = async (ctx) => {
 
   switch (vendor.toLowerCase()) {
     case 'github':
-      user = await authGithub(params)
+      user = await authGithub(ctx, params)
       break
 
     case 'gitee':
