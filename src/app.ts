@@ -49,6 +49,13 @@ app.use(bodyParser())
 process.env.NODE_ENV === 'development' && app.use(async (ctx, next) => {
   // console.log('request body: ', ctx.request.body)
 
+  ctx.body = {
+    request: {
+      header: ctx.headers,
+      body: ctx.request.body
+    }
+  }
+
   await next()
 })
 
@@ -64,9 +71,9 @@ const mainHandler: Koa.Middleware = async (ctx) => {
   const { vendor, input } = ctx.request.body as authBody
   // console.log(vendor, input)
 
-  const params = JSON.parse(input)
+  const params = input
 
-  let user
+  let user = null
 
   switch (vendor.toLowerCase()) {
     case 'github':
@@ -74,20 +81,14 @@ const mainHandler: Koa.Middleware = async (ctx) => {
       break
 
     case 'gitee':
-      user = await authGitee(params)
+      user = await authGitee(ctx, params)
       break
 
     default:
-      user = null
+      ctx.throw(400, 'No vendor is specified')
   }
 
-  ctx.body = {
-    data: { user },
-    request: {
-      header: ctx.headers,
-      body: ctx.request.body
-    }
-  }
+  ctx.body.data = { user }
 }
 app.use(mainHandler)
 

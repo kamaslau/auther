@@ -27,10 +27,8 @@ const periods: timePeriods = {
  * @param {*} error
  * @param {*} ctx
  */
-const errorCatcher = (error, ctx) => {
-  console.error('server error: ', error)
-
-  ctx.status = error.status ?? 501
+const errorCatcher = (error) => {
+  console.error('server error: ', (error as Error).message)
 }
 
 /**

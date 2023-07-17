@@ -91,14 +91,14 @@ const requestUserAccount = async (token: string) => {
  * 2. 应用服务端使用code向Gitee服务端请求access_token
  * 3. 应用服务端使用access_token向Gitee服务端请求用户数据
  */
-export const main = async (params): Promise<any | null> => {
+export const main = async (ctx, params): Promise<any | null> => {
   console.log('params: ', params)
 
   const { code, appId, appSecret } = params
 
-  try {
-    const credentials = composeCredentials(code, appId, appSecret)
+  const credentials = composeCredentials(code, appId, appSecret)
 
+  try {
     const { access_token } = await requestAccessToken(credentials)
 
     const user = await requestUserAccount(access_token)
@@ -106,9 +106,14 @@ export const main = async (params): Promise<any | null> => {
     return user
 
   } catch (error) {
-    console.error(error)
+    process.env.NODE_ENV !== 'production' && console.error(error)
+
+    ctx.body.error = {
+      message: (error as Error).message
+    }
 
     return null
+
   }
 }
 

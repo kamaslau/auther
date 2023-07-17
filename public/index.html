@@ -33,7 +33,18 @@
         // console.log("handleSubmit: ", event);
         event.preventDefault();
 
-        const payload = Object.fromEntries(new FormData(event.target));
+        // const payload = Object.fromEntries(new FormData(event.target));
+
+        const vendorValue = document.getElementsByName("vendor")[0].value;
+
+        const inputValue = JSON.parse(
+          document.getElementsByName("input")[0].value ?? null
+        );
+
+        const payload = {
+          vendor: vendorValue,
+          input: inputValue,
+        };
 
         const result = await fetch("/", {
           method: "POST",
