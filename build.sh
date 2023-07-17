@@ -24,7 +24,8 @@ fi
 IMAGE_NAME="$REGISTRY"/"$ORG_NAME"/"$APP_NAME"
 
 # Build image
-docker build . -t $APP_NAME:latest --no-cache
+# Consider using arg --no-cache to avoid cache
+docker build . -t $APP_NAME:latest
 
 # Tag as latest
 docker tag $APP_NAME:latest $IMAGE_NAME:latest
