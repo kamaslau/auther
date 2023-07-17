@@ -107,7 +107,7 @@ const mainHandler: Koa.Middleware = async (ctx) => {
       ctx.throw(400, 'No vendor is specified')
   }
 
-  ctx.body.data = { user }
+  ctx.body.data = user
 }
 app.use(mainHandler)
 
