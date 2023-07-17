@@ -95,9 +95,9 @@ const requestUserAccount = async (token: string) => {
 export const main = async (ctx, params): Promise<any | null> => {
   // console.log('params: ', params)
 
-  const { code, appId, appSecret } = params
+  const { code, appId, appSecret, redirectUri } = params
 
-  const credentials = composeCredentials(code, appId, appSecret)
+  const credentials = composeCredentials(code, appId, appSecret, redirectUri)
 
   try {
     const { access_token } = await requestAccessToken(credentials)
