@@ -10,6 +10,7 @@ import Joi from 'joi'
 import { errorCatcher, consoleInit, consoleStart, briefLog, methodHandler } from './utils.js'
 import authGithub, { getAuthUrl as getGithubAuthUrl } from './libs/github.js'
 import authGitee, { getAuthUrl as getGiteeAuthUrl } from './libs/gitee.js'
+import { code2Session as authWeapp } from './libs/wechat.js'
 
 dotenv.config()
 
@@ -92,22 +93,26 @@ const mainHandler: Koa.Middleware = async (ctx) => {
   // 判断并调用相应登陆方式
   const { vendor, input } = ctx.request.body as authBody
 
-  let user = null
+  let result: any = null
 
   switch (vendor?.toLowerCase()) {
     case 'github':
-      user = await authGithub(ctx, input)
+      result = await authGithub(ctx, input)
       break
 
     case 'gitee':
-      user = await authGitee(ctx, input)
+      result = await authGitee(ctx, input)
+      break
+
+    case 'weapp':
+      result = await authWeapp(ctx, input)
       break
 
     default:
       ctx.throw(400, 'No vendor is specified')
   }
 
-  ctx.body.data = user
+  ctx.body.data = result
 }
 app.use(mainHandler)
 
