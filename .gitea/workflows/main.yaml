@@ -1,31 +1,71 @@
-name: Gitea Actions Demo
+name: Build and deploy through Gitea Package registry
 
-run-name: ${{ gitea.actor }} is testing out Gitea Actions 🚀
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
 
+# For built-in contexts, checkout https://docs.github.com/en/actions/learn-github-actions/contexts
+env:
+  REGISTRY: git.liuyajie.com
+  # gitea.repository as <account>/<repo>
+  IMAGE_NAME: ${{ gitea.repository }}
+
 jobs:
-  Explore-Gitea-Actions:
-    runs-on: ubuntu-latest
+  # Build and push image to registry
+  build-and-push:
+    # https://docs.github.com/en/actions/using-jobs/choosing-the-runner-for-a-job
+    runs-on: [ubuntu-latest, X64]
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ gitea.event_name }} event."
-
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by Gitea!"
-
-      - run: echo "🔎 The name of your branch is ${{ gitea.ref }} and your repository is ${{ gitea.repository }}."
+      - run: echo "🎉 The job was automatically triggered by a ${{ gitea.event_name }} event to the ${{ gitea.ref }} branch of repository ${{ gitea.repository }}, running on ${{ runner.os }}/${{ runner.arch }}."
 
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - run: echo "💡 The ${{ gitea.repository }} repository has been cloned to the runner."
-
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-
-      - name: List files in the repository
+      # https://github.com/actions/runner/issues/655
+      - name: Load env variables and write into .env file
+        shell: bash
         run: |
+          # git update-index --chmod=+x "${{ gitea.workspace }}/.env.production"
+          echo "${{ secrets.ENV_FILE }}" > "${{ gitea.workspace }}/.env.production"
           ls ${{ gitea.workspace }}
 
-      - run: sh -x build.sh
+      # https://gitea.com/gitea/act_runner/issues/301
+      - name: Install docker for ubuntu-latest runner
+        uses: papodaca/install-docker-action@main
+
+      # https://github.com/marketplace/actions/docker-login
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ gitea.actor }}
+          password: ${{ secrets.GITEA_TOKEN }}
+
+      # https://github.com/marketplace/actions/docker-metadata-action
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # set latest tag for default branch
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      # https://github.com/marketplace/actions/build-and-push-docker-images
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        # https://docs.gitea.com/usage/actions/comparison#dockerbuild-push-actionv4
+        env:
+          ACTIONS_RUNTIME_TOKEN: ""
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
