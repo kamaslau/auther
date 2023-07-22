@@ -26,14 +26,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      # https://github.com/actions/runner/issues/655
-      - name: Load env variables and write into .env file
-        shell: bash
-        run: |
-          # git update-index --chmod=+x "${{ gitea.workspace }}/.env.production"
-          echo "${{ secrets.ENV_FILE }}" > "${{ gitea.workspace }}/.env.production"
-          ls ${{ gitea.workspace }}
-
       # https://gitea.com/gitea/act_runner/issues/301
       - name: Install docker for ubuntu-latest runner
         uses: papodaca/install-docker-action@main
