@@ -60,4 +60,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - run: echo "Image built is ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
