@@ -37,7 +37,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ gitea.actor }}
-          password: ${{ secrets.GITEA_TOKEN }}
+          password: ${{ secrets.WORKFLOW_REGISTRY_TOKEN }}
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Extract metadata (tags, labels) for Docker
