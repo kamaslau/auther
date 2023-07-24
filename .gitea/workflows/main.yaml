@@ -20,7 +20,8 @@ jobs:
       packages: write
 
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ gitea.event_name }} event to the ${{ gitea.ref }} branch of repository ${{ gitea.repository }}, running on ${{ runner.os }}/${{ runner.arch }}."
+      - name: Action digest
+        run: echo "🎉 The job was triggered by a ${{ gitea.event_name }} event on branch '${{ gitea.ref }}' of repository '${{ gitea.repository }}', running on '${{ runner.os }}/${{ runner.arch }}' runner."
 
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -45,8 +46,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ gitea.repository }}
           # set latest tag for default branch
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+          tags: type=raw,value=latest,enable={{is_default_branch}}
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and push Docker image
