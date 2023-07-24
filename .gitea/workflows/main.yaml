@@ -1,4 +1,4 @@
-name: Build and deploy through Gitea Package registry
+name: Build and deploy through Docker
 
 on:
   workflow_dispatch:
@@ -8,8 +8,7 @@ on:
 # For built-in contexts, checkout https://docs.github.com/en/actions/learn-github-actions/contexts
 env:
   REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
-  # gitea.repository as <account>/<repo>
-  IMAGE_NAME: ${{ gitea.repository }}
+  REGISTRY_USER: ${{ gitea.actor }}
 
 jobs:
   # Build and push image to registry
@@ -32,12 +31,11 @@ jobs:
 
       # https://gitea.com/gitea/act_runner/issues/303
       # https://github.com/marketplace/actions/docker-login
-      - run: echo "Try login to ${{ env.REGISTRY }} as ${{ gitea.actor }}"
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ gitea.actor }}
+          username: ${{ env.REGISTRY_USER }}
           password: ${{ secrets.WORKFLOW_REGISTRY_TOKEN }}
 
       # https://github.com/marketplace/actions/docker-metadata-action
@@ -45,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ gitea.repository }}
           # set latest tag for default branch
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
@@ -61,7 +59,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - run: echo "Image built is ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
-
-      - run: echo "🍏 This job's status is ${{ job.status }}."
