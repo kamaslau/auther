@@ -7,8 +7,9 @@ on:
 
 # For built-in contexts, checkout https://docs.github.com/en/actions/learn-github-actions/contexts
 env:
-  REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
-  REGISTRY_USER: ${{ gitea.actor }}
+  REGISTRY: ${{ secrets.REGISTRY || "gitea.com" }}
+  REGISTRY_USER: ${{  secrets.REGISTRY_USER || gitea.actor }}
+  REGISTRY_TOKEN: ${{  secrets.REGISTRY_TOKEN || secrets.GITEA_TOKEN }}
 
 jobs:
   # Build and push image to registry
@@ -21,13 +22,13 @@ jobs:
 
     steps:
       - name: Action digest
-        run: echo "🎉 The job was triggered by '${{ gitea.event_name }}'' event on branch '${{ gitea.ref }}' of repository '${{ gitea.repository }}', running on '${{ runner.os }}/${{ runner.arch }}' runner."
+        run: echo "🎉 The job was triggered by '${{ gitea.event_name }}' event on branch '${{ gitea.ref }}' of repository '${{ gitea.repository }}', running on '${{ runner.os }}/${{ runner.arch }}' runner."
 
       - name: Check out repository code
         uses: actions/checkout@v3
 
       # https://gitea.com/gitea/act_runner/issues/301
-      - name: \[Gitea\] Install docker for ubuntu-latest runner
+      - name: "[Gitea] Install docker for ubuntu-latest runner"
         uses: papodaca/install-docker-action@main
 
       # https://gitea.com/gitea/act_runner/issues/303
@@ -37,7 +38,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
-          password: ${{ secrets.WORKFLOW_REGISTRY_TOKEN }}
+          password: ${{ env.REGISTRY_TOKEN }}
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Extract metadata (tags, labels) for Docker
