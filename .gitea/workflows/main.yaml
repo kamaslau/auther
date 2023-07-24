@@ -7,7 +7,7 @@ on:
 
 # For built-in contexts, checkout https://docs.github.com/en/actions/learn-github-actions/contexts
 env:
-  REGISTRY: git.liuyajie.com
+  REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
   # gitea.repository as <account>/<repo>
   IMAGE_NAME: ${{ gitea.repository }}
 
