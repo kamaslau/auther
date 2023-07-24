@@ -7,9 +7,7 @@ on:
 
 # For built-in contexts, checkout https://docs.github.com/en/actions/learn-github-actions/contexts
 env:
-  REGISTRY: ${{ secrets.REGISTRY || "gitea.com" }}
-  REGISTRY_USER: ${{ secrets.REGISTRY_USER || gitea.actor }}
-  REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN || secrets.GITEA_TOKEN }}
+  REGISTRY: ${{ var.REGISTRY || "gitea.com" }}
 
 jobs:
   # Build and push image to registry
@@ -24,7 +22,7 @@ jobs:
       - name: Action digest
         run: |
           echo "🎉 The job was triggered by '${{ gitea.event_name }}' event on branch '${{ gitea.ref }}' of repository '${{ gitea.repository }}', running on '${{ runner.os }}/${{ runner.arch }}' runner."
-          echo "Operating image '${{ secrets.REGISTRY }}' ${{ env.REGISTRY }}/${{ gitea.repository }} as ${{ env.REGISTRY_USER }}"
+          echo "Operating image '${{ env.REGISTRY }}/${{ gitea.repository }}'"
 
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -38,9 +36,9 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_TOKEN }}
+          registry: ${{ env.REGISTRY || "gitea.com" }}
+          username: ${{ secrets.REGISTRY_USER || gitea.actor }}
+          password: ${{ secrets.REGISTRY_TOKEN || secrets.GITEA_TOKEN }}
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Extract metadata (tags, labels) for Docker
