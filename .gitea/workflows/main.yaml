@@ -21,13 +21,13 @@ jobs:
 
     steps:
       - name: Action digest
-        run: echo "🎉 The job was triggered by a ${{ gitea.event_name }} event on branch '${{ gitea.ref }}' of repository '${{ gitea.repository }}', running on '${{ runner.os }}/${{ runner.arch }}' runner."
+        run: echo "🎉 The job was triggered by '${{ gitea.event_name }}'' event on branch '${{ gitea.ref }}' of repository '${{ gitea.repository }}', running on '${{ runner.os }}/${{ runner.arch }}' runner."
 
       - name: Check out repository code
         uses: actions/checkout@v3
 
       # https://gitea.com/gitea/act_runner/issues/301
-      - name: Install docker for ubuntu-latest runner
+      - name: \[Gitea\] Install docker for ubuntu-latest runner
         uses: papodaca/install-docker-action@main
 
       # https://gitea.com/gitea/act_runner/issues/303
