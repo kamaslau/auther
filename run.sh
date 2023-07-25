@@ -8,7 +8,7 @@ log() {
   echo "$@" >&2
 }
 
-ORG_NAME=${ORG_NAME:="liuyajie728"}
+ORG_NAME=${ORG_NAME:="kamaslau"}
 APP_NAME=${APP_NAME:="auther"}
 
 CN=${CN:="y"}
@@ -17,8 +17,8 @@ if [ "$CN" = y ]; then
   log "Deploy in PRC"
   REGISTRY=${REGISTRY:="registry.cn-shanghai.aliyuncs.com"} # Aliyun
 else
-  REGISTRY=${REGISTRY:="ghcr.io"} # GitHub
-  # REGISTRY=${REGISTRY:="docker.io"} # Docker Hub
+  # REGISTRY=${REGISTRY:="ghcr.io"} # GitHub
+  REGISTRY=${REGISTRY:="docker.io"} # Docker Hub
 fi
 
 PORT=${PORT:="3000"}
