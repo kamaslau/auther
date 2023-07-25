@@ -8,7 +8,7 @@ log() {
   echo "$@" >&2
 }
 
-ORG_NAME=${ORG_NAME:="liuyajie728"}
+ORG_NAME=${ORG_NAME:="kamaslau"}
 APP_NAME=${APP_NAME:="auther"}
 
 CN=${CN:="y"}
