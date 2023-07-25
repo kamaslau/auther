@@ -34,7 +34,6 @@ app.on('error', errorCatcher)
 
 app.use(briefLog)
 
-
 if (process.env.NODE_ENV === 'development') {
   const staticRoot = 'public'
   const staticOpts = {
@@ -43,9 +42,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(serve(staticRoot, staticOpts))
 }
 
-app.use(cors({ origin: '*', allowMethods: 'POST' }))
-
-app.use(methodHandler)
+if (process.env.NODE_ENV === 'production') {
+  app.use(cors({ origin: '*', allowMethods: 'POST' }))
+  app.use(methodHandler)
+}
 
 app.use(bodyParser())
 app.use(async (ctx, next) => {
