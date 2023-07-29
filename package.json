@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "latest",
-    "@types/koa": "^2.13.7",
+    "@types/koa": "^2.13.8",
     "@types/node": "latest",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
