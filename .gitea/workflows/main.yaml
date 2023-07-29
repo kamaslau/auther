@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: "git.liuyajie.com"
   # Replace above with below, after Gitea support actions->variable feature
-  # REGISTRY: ${{ var.REGISTRY || 'gitea.com' }}
+  # REGISTRY: ${{ vars.REGISTRY || 'gitea.com' }}
 
 jobs:
   # Build and push image to registry
