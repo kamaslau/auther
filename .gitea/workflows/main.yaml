@@ -7,15 +7,13 @@ on:
 
 # For built-in contexts, checkout https://docs.github.com/en/actions/learn-github-actions/contexts
 env:
-  REGISTRY: "git.liuyajie.com"
-  # Replace above with below, after Gitea support actions->variable feature
-  # REGISTRY: ${{ vars.REGISTRY || 'gitea.com' }}
+  REGISTRY: ${{ vars.REGISTRY || 'git.liuyajie.com' }}
 
 jobs:
   # Build and push image to registry
   build-and-push:
     # https://docs.github.com/en/actions/using-jobs/choosing-the-runner-for-a-job
-    runs-on: [ubuntu-latest, X64]
+    runs-on: [ubuntu-latest]
     permissions:
       contents: read
       packages: write
