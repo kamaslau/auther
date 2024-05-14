@@ -132,8 +132,6 @@ const consoleInit = (): void => {
 
 /**
  * 输出业务启动信息
- *
- * @param graphqlPath {undefined|string} GraphQL服务路径
  */
 const consoleStart = (): void => {
   const serverPort = process.env.PORT ?? 3000

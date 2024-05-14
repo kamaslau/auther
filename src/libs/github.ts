@@ -6,9 +6,8 @@
 
 /**
  * 获取鉴权URL
- * @returns {string}
  */
-export const getAuthUrl = () => `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_APP_ID}&redirect_uri=http://localhost:${process.env.PORT}&scope=user:email`
+export const getAuthUrl = (): string => `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_APP_ID}&redirect_uri=http://localhost:${process.env.PORT}&scope=user:email`
 
 type clientCode = string
 

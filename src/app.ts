@@ -16,18 +16,6 @@ dotenv.config()
 
 consoleInit()
 
-if (process.env.NODE_ENV === 'development') {
-  console.log(
-    'Request GitHub auth code with url: ',
-    getGithubAuthUrl()
-  )
-
-  console.log(
-    'Request Gitee auth code with url: ',
-    getGiteeAuthUrl()
-  )
-}
-
 const app = new Koa()
 
 app.on('error', errorCatcher)
@@ -119,3 +107,19 @@ app.use(mainHandler)
 app.listen(process.env.PORT)
 
 consoleStart()
+
+if (process.env.NODE_ENV === 'development') {
+  console.log(
+    '\x1b[32m%s\x1b[33m', 'Request GitHub auth code with url:\n',
+    getGithubAuthUrl()
+  )
+
+  console.log(
+    '\x1b[32m%s\x1b[33m', 'Request Gitee auth code with url:\n',
+    getGiteeAuthUrl()
+  )
+
+  console.log(
+    '\x1b[32m%s\x1b[0m', '🟢 ============================\n'
+  )
+}

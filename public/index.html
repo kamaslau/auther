@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hans">
   <head>
     <meta charset="utf-8" />
     <title>auther</title>
@@ -46,7 +46,7 @@
         );
 
         const payload = {
-          vendor: vendorValue,
+          vendor: String(vendorValue).trim().toLowerCase(),
           input: inputValue,
         };
 
@@ -79,29 +79,32 @@
 
       <form onsubmit="handleSubmit(event)" method="post" autocomplete="on">
         <fieldset>
-          <label for="vendor">Vendor</label>
-          <input
-            name="vendor"
-            placeholder="Github, GitLab, Gitee, etc."
-            required
-          />
+          <div>
+            <label for="vendor">Vendor</label>
+            <input
+              name="vendor"
+              placeholder="Github, GitLab, Gitee, etc."
+              required
+            />
+          </div>
 
-          <br />
-          <label for="input">Input</label>
-          <textarea
-            name="input"
-            rows="10"
-            placeholder='Parameters in JSON format, for example {"appId":"", "appSecret":"", "code":""}'
-          >
+          <div>
+            <label for="input">Input</label>
+            <textarea
+              name="input"
+              rows="10"
+              placeholder='Parameters in JSON format, for example {"appId":"", "appSecret":"", "code":""}'
+            >
 {"appId":"", "appSecret":"", "code":""}</textarea
-          >
+            >
+          </div>
         </fieldset>
 
         <button>Submit</button>
         <button type="reset">Reset</button>
       </form>
 
-      <output> </output>
+      <output></output>
     </main>
   </body>
 </html>
