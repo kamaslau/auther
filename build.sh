@@ -17,8 +17,8 @@ if [ "$CN" = y ]; then
   log "Deploy in PRC"
   REGISTRY=${REGISTRY:="registry.cn-shanghai.aliyuncs.com"} # Aliyun
 else
-  # REGISTRY=${REGISTRY:="ghcr.io"} # GitHub
-  REGISTRY=${REGISTRY:="docker.io"} # Docker Hub
+  REGISTRY=${REGISTRY:="ghcr.io"} # GitHub
+  # REGISTRY=${REGISTRY:="docker.io"} # Docker Hub
 fi
 
 IMAGE_NAME="$REGISTRY"/"$ORG_NAME"/"$APP_NAME"

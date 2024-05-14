@@ -31,7 +31,7 @@ COPY --from=deps-dev ${APP_PATH}/node_modules ./node_modules
 COPY src ./src
 COPY types ./types
 # COPY .env ./
-COPY .env.sample ./.env
+COPY .env_template ./.env
 COPY tsconfig.json ./
 RUN pnpm build
 
