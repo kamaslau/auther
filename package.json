@@ -22,24 +22,24 @@
     "prepare": "node -e \"if (process.env.NODE_ENV === 'production'){process.exit(1)} \" || husky install"
   },
   "dependencies": {
-    "@koa/bodyparser": "^5.0.0",
+    "@koa/bodyparser": "^5.1.1",
     "@koa/cors": "^5.0.0",
     "dotenv": "^16.4.5",
-    "joi": "^17.12.2",
-    "koa": "^2.15.1",
+    "joi": "^17.13.1",
+    "koa": "^2.15.3",
     "koa-static": "^5.0.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "latest",
     "@types/koa": "^2.15.0",
     "@types/node": "latest",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   }
 }
