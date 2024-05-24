@@ -1,5 +1,14 @@
 # auther
 
+## Dev
+
+```bash
+# Config env variables
+cp .env.sample .env
+
+pnpm start:dev
+```
+
 ## Deploy
 
 ### Github/Gitea Actions
@@ -27,7 +36,7 @@ On dev machine:
 
 ```bash
 # Config env variables
-cp .env.sample .env
+cp .env.sample .env.production
 
 # Build and push
 sh -x build.sh
