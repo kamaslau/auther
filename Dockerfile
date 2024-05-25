@@ -2,7 +2,7 @@ FROM node:lts-slim AS base
 ENV APP_PATH=/root/app
 WORKDIR ${APP_PATH}
 # [Optional]Config PRC mirror for NPM
-RUN npm set registry https://registry.npmmirror.com/
+# RUN npm set registry https://registry.npmmirror.com/
 RUN npm add -g pnpm@latest
 
 

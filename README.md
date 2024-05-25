@@ -13,15 +13,15 @@ pnpm start:dev
 
 ### Github/Gitea Actions
 
-Set following secrets&variables in project config page:
+Set following secrets & variables in project config page:
 
 #### Secrets
 
 https://project_url/settings/secrets/actions
 
 - ENV_FILE (.env file contents)
-- REGISTRY_TOKEN (optional)
 - HOST, HOST_USERNAME, HOST_KEY (PRIVATE KEY file contents)
+- REGISTRY_TOKEN (with package:read and write permissions)
 
 #### Variables (all is optional)
 
