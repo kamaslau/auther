@@ -21,14 +21,15 @@ https://project_url/settings/secrets/actions
 
 - ENV_FILE (.env file contents)
 - HOST, HOST_USERNAME, HOST_KEY (PRIVATE KEY file contents)
-- REGISTRY_TOKEN (with package:read and write permissions)
+- REGISTRY_TOKEN (with package:read & write permissions)
 
 #### Variables (all is optional)
 
 https://project_url/settings/variables/actions
 
-- APP_NAME, APP_PORT
-- REGISTRY
+- APP_NAME (optional)
+- APP_PORT
+- REGISTRY (optional)
 
 ### Docker
 
