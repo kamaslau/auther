@@ -107,7 +107,7 @@ export const main = async (ctx, params): Promise<any | null> => {
     return user
 
   } catch (error) {
-    process.env.NODE_ENV !== 'production' && console.error(error)
+    if (process.env.NODE_ENV !== 'production') console.error(error)
 
     ctx.body.error = {
       message: (error as Error).message
