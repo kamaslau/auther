@@ -1,7 +1,7 @@
 // External
 import * as dotenv from 'dotenv'
 import Koa from 'koa'
-import bodyParser from '@koa/bodyparser' // 处理json和x-www-form-urlencoded
+import { bodyParser } from '@koa/bodyparser' // 处理json和x-www-form-urlencoded
 import serve from 'koa-static'
 import cors from '@koa/cors'
 import Joi from 'joi'
@@ -23,14 +23,11 @@ app.on('error', errorCatcher)
 app.use(briefLog)
 
 if (process.env.NODE_ENV === 'development') {
-  const staticRoot = 'public'
   const staticOpts = {
     maxage: 1000 * 60
   }
-  app.use(serve(staticRoot, staticOpts))
-}
-
-if (process.env.NODE_ENV === 'production') {
+  app.use(serve('public', staticOpts))
+} else {
   app.use(cors({ origin: '*', allowMethods: 'POST' }))
   app.use(methodHandler)
 }
@@ -52,12 +49,14 @@ app.use(async (ctx, next) => {
   await next()
 })
 
+/**
+ * 验证输入值
+ */
 type authInput = object | string | any
 interface authBody {
   vendor: string
   input: authInput
 }
-
 const inputValidator: Koa.Middleware = async (ctx, next) => {
   const schema = Joi.object({
     vendor: Joi.string().required(),
@@ -74,7 +73,6 @@ const inputValidator: Koa.Middleware = async (ctx, next) => {
     await next()
   }
 }
-// 验证输入值
 app.use(inputValidator)
 
 const mainHandler: Koa.Middleware = async (ctx) => {
@@ -104,10 +102,9 @@ const mainHandler: Koa.Middleware = async (ctx) => {
 }
 app.use(mainHandler)
 
+// Launch server
 app.listen(process.env.PORT)
-
 consoleStart()
-
 if (process.env.NODE_ENV === 'development') {
   console.log(
     '\x1b[32m%s\x1b[33m', 'Request GitHub auth code with url:\n',
