@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Lau, Kamas <kamaslau@dingtalk.com> (https://www.kamaslau.com/)",
   "license": "MIT",
-  "description": "",
+  "description": "Authorization&Authentication",
   "keywords": [
     "github",
     "gitee",
@@ -16,8 +16,8 @@
   "type": "module",
   "main": "dist/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "NODE_ENV=production node .",
     "start:dev": "cross-env nodemon",
@@ -42,8 +42,16 @@
     "eslint": "^9.9.0",
     "husky": "^9.1.4",
     "nodemon": "^3.1.4",
-    "ts-node": "^10.9.2",
+    "tsimp": "^2.0.11",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamaslau/auther.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kamaslau/auther/issues"
+  },
+  "homepage": "https://github.com/kamaslau/auther#readme"
 }

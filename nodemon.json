@@ -2,7 +2,7 @@
   "env": {
     "NODE_ENV": "development"
   },
-  "exec": "node --loader ts-node/esm src/app.ts",
+  "exec": "node --import=tsimp/import src/app.ts",
   "ext": "ts",
   "watch": ["src", ".env", ".env.local", "tsconfig.json"]
 }
