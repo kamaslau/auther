@@ -35,17 +35,17 @@
     "@eslint/js": "^9.9.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/koa": "^2.15.0",
-    "@types/node": "^22.3.0",
-    "@typescript-eslint/eslint-plugin": "^8.1.0",
-    "@typescript-eslint/parser": "^8.1.0",
+    "@types/node": "^22.4.2",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.9.0",
     "globals": "^15.9.0",
-    "husky": "^9.1.4",
+    "husky": "^9.1.5",
     "nodemon": "^3.1.4",
     "tsimp": "^2.0.11",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.1.0"
+    "typescript-eslint": "^8.2.0"
   },
   "repository": {
     "type": "git",
