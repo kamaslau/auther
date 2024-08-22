@@ -91,7 +91,8 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.HOST_KEY}}
+          # key: ${{ secrets.HOST_KEY}}
+          password: ${{ secrets.HOST_PASSWORD}}
           script_stop: true # allow script to exit upon error
           script: |
             docker login ${{ env.REGISTRY }} -u ${{ secrets.REGISTRY_USER || gitea.actor }} -p ${{ secrets.REGISTRY_TOKEN || secrets.GITEA_TOKEN }}

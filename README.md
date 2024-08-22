@@ -27,9 +27,9 @@ https://project_url/settings/secrets/actions
 
 https://project_url/settings/variables/actions
 
-- APP_NAME (optional)
+- APP_NAME
 - APP_PORT
-- REGISTRY (optional)
+- REGISTRY
 
 ### Docker
 
