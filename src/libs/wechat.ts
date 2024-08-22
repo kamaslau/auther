@@ -25,7 +25,7 @@ interface WebAccessToken {
  */
 const webAccessToken = async (): Promise<WebAccessToken> => {
   const result: any = await fetch(
-    `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${process.env.WC_ID ?? ''}&secret=${process.env.WC_SECRET ?? ''}&code=CODE&grant_type=authorization_code`
+    `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${process.env.WEAPP_APP_ID ?? ''}&secret=${process.env.WEAPP_APP_SECRET ?? ''}&code=CODE&grant_type=authorization_code`
   )
     .then((res) => res.json())
     .catch(catchError)

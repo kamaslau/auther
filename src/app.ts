@@ -90,12 +90,14 @@ const mainHandler: Koa.Middleware = async (ctx) => {
       result = await authGithub(ctx, input)
       break
 
-    case 'weapp':
+    case 'wechat':
       result = await authWeapp(ctx, input)
       break
 
     default:
-      ctx.throw(400, 'No valid vendor matched')
+      ctx.status = 400
+      ctx.body.message = 'No valid vendor matched'
+      return
   }
 
   ctx.body.data = result
