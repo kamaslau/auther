@@ -27,9 +27,9 @@
     "@koa/bodyparser": "^5.1.1",
     "@koa/cors": "^5.0.0",
     "dotenv": "^16.4.5",
-    "joi": "^17.13.3",
     "koa": "^2.15.3",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

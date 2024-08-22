@@ -24,6 +24,7 @@ const composeCredentials = (code: clientCode, appId: string, appSecret: string):
 })
 
 const catchError = (error: Error) => {
+  console.error('error: ', error)
   throw new Error(JSON.stringify(error))
 }
 

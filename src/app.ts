@@ -4,7 +4,7 @@ import Koa from 'koa'
 import { bodyParser } from '@koa/bodyparser' // 处理json和x-www-form-urlencoded
 import serve from 'koa-static'
 import cors from '@koa/cors'
-import Joi from 'joi'
+import { z } from 'zod'
 
 // Local
 import { errorCatcher, consoleInit, consoleStart, briefLog, methodHandler } from './utils.js'
@@ -52,24 +52,24 @@ app.use(async (ctx, next) => {
 /**
  * 验证输入值
  */
-type authInput = object | string | any
+type authInput = object | string
 interface authBody {
   vendor: string
   input: authInput
 }
 const inputValidator: Koa.Middleware = async (ctx, next) => {
-  const schema = Joi.object({
-    vendor: Joi.string().required(),
-    input: Joi.object().required()
-  })
+  const result = z.object({
+    vendor: z.string(),
+    input: z.any()
+  }).safeParse(ctx.request.body)
 
-  const result = schema.validate(ctx.request.body)
-  // console.log('result: ', result)
+  if (!result.success) {
+    // console.log('result.error: ', result.error)
 
-  if (result.error) {
     ctx.status = 422
-    ctx.body.error = result.error.details.map(item => item.message)
+    ctx.body.error = result.error.issues.map(item => `${item.path.join('->')}: ${item.message}`).join('; ')
   } else {
+    ctx.payload = result.data
     await next()
   }
 }
@@ -77,17 +77,17 @@ app.use(inputValidator)
 
 const mainHandler: Koa.Middleware = async (ctx) => {
   // 判断并调用相应登陆方式
-  const { vendor, input } = ctx.request.body as authBody
+  const { vendor, input } = ctx.payload as authBody
 
   let result: any = null
 
   switch (vendor?.toLowerCase()) {
-    case 'github':
-      result = await authGithub(ctx, input)
-      break
-
     case 'gitee':
       result = await authGitee(ctx, input)
+      break
+
+    case 'github':
+      result = await authGithub(ctx, input)
       break
 
     case 'weapp':
@@ -95,7 +95,7 @@ const mainHandler: Koa.Middleware = async (ctx) => {
       break
 
     default:
-      ctx.throw(400, 'No vendor is specified')
+      ctx.throw(400, 'No valid vendor matched')
   }
 
   ctx.body.data = result
