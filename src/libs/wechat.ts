@@ -68,7 +68,7 @@ interface AccessToken {
 }
 const getAccessToken = async (): Promise<AccessToken> => {
   const result: any = await fetch(
-    `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${process.env.WA_ID ?? ''}&secret=${process.env.WA_SECRET ?? ''}`
+    `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${process.env.WEAPP_APP_ID ?? ''}&secret=${process.env.WEAPP_APP_SECRET ?? ''}`
   )
     .then((res) => res.json())
     .catch(catchError)
@@ -96,7 +96,7 @@ const code2Session = async (ctx, params): Promise<Session | null> => {
 
   try {
     const result: any = await fetch(
-      `https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&appid=${appId}&secret=${appSecret}&js_code=${code}`
+      `https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&appid=${appId ?? process.env.WEAPP_APP_ID}&secret=${appSecret ?? process.env.WEAPP_APP_SECRET}&js_code=${code}`
     )
       .then((res) => res.json())
       .catch(catchError)
