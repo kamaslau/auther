@@ -10,15 +10,15 @@ import os from 'node:os'
  */
 type timePeriods = Record<string, number>;
 const periods: timePeriods = {
-  _h: 3600,
-  _d: 86400,
-  _week: 604800,
-  _m28d: 2419200,
-  _m29d: 2505600,
-  _m30d: 2592000,
-  _m31d: 2678400,
-  _y365d: 31536000,
-  _y366d: 31622400
+  _hour: 3600,
+  _day: 8_6400,
+  _week: 60_4800,
+  _m28d: 241_9200,
+  _m29d: 250_5600,
+  _m30d: 259_2000,
+  _m31d: 267_8400,
+  _y365d: 3153_6000,
+  _y366d: 3162_2400
 }
 
 /**

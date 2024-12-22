@@ -82,10 +82,16 @@
           <div>
             <label for="vendor">Vendor</label>
             <input
+              list="vendors"
               name="vendor"
               placeholder="Github, GitLab, Gitee, etc."
               required
             />
+            <datalist id="vendors">
+              <option value="github">Github</option>
+              <option value="gitlab">GitLab</option>
+              <option value="gitee">Gitee</option>
+            </datalist>
           </div>
 
           <div>
