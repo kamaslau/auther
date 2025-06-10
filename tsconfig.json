@@ -1,8 +1,7 @@
 {
-  "extends": "@tsconfig/node22/tsconfig.json",
+  "extends": "@tsconfig/node24/tsconfig.json",
   "include": ["src/**/*", "types"],
   "compilerOptions": {
-    "strict": true,
     "typeRoots": ["node_modules/@types", "types"],
     "rootDir": "src",
     "outDir": "dist",
@@ -10,9 +9,6 @@
       "esnext",
       "DOM" // 'DOM' is for native fetch method
     ],
-    "target": "esnext",
-    "types": ["node", "jest"],
-    "removeComments": true,
-    "noImplicitAny": false
+    "types": ["node", "jest"]
   }
 }
